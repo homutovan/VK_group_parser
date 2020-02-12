@@ -26,7 +26,7 @@ def stabilizer(decor_method):
                 result = decor_method(self, *args, **kwargs)['response']
                 break
             except Exception as e:
-                print(f'{Fore.RED}При обработке запроса возникла ошибка: {e}, повторяю запрос{Style.RESET_ALL}')  #'\r' ,'\t' * 12, 
+                print(f'{Fore.RED}При обработке запроса возникла ошибка: {e}, повторяю запрос{Style.RESET_ALL}')
                 print(decor_method(self, *args, **kwargs)['error'])
         return result
     return wrapper
@@ -178,48 +178,10 @@ class Menu:
             instruction = input(instruction_string)
             loop = self.main_menu(instruction)
             
-
-
         return None
-
-     
-USER_ID = '2453810'
-USER_ID2 = '160117406'
-USER_ID3 = '15824329'   
-USER_ID4 = 'eshmargunov'
-USER_ID5 ='azarenko85'
-
-#user1 = User(USER_ID4)
-#user2 = User(USER_ID2)
-# user3 = User(USER_ID3)
-#user4 = User(USER_ID4) #483163743
-      
-
-#print(len(user1.groups))
-#a = user1.groups_list()
-#print(len(a))
-#pprint(a)
-
-#print(user1.common_group())
-#pprint(user1.group_info(user1.decorrelator()))
-#pprint(user1.group_info(user1.correlator()))
-
-
-
-
-
-
-"""
-Введите USER ID пользователя ВК
-Вывести результаты поиска на дисплей
-Записать результаты поиска в файл
-"""
-
+    
 if __name__ == '__main__':
     
-    #main_menu()
-    #user = User('homutovan')
-    #pprint(user.group_info(user.correlator())) 
     menu = Menu('Система статистических исследований ВК')
 
 
