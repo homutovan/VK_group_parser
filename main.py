@@ -25,9 +25,14 @@ def stabilizer(decor_method):
             try:
                 result = decor_method(self, *args, **kwargs)['response']
                 break
-            except Exception as e:
-                print(f'{Fore.RED}При обработке запроса возникла ошибка: {e}, повторяю запрос{Style.RESET_ALL}')
+            
+            except requests.exceptions.ConnectionError:
+                print(f'{Fore.RED}Ошибка сетевого соединения, проверьте подключение{Style.RESET_ALL}')
+                
+            except Exception as err:
+                print(f'{Fore.RED}При обработке запроса возникла ошибка: {err}, повторяю запрос{Style.RESET_ALL}')
                 print(decor_method(self, *args, **kwargs)['error'])
+                
         return result
     return wrapper
 
@@ -59,7 +64,7 @@ class User:
             timeout = 0.35 - (time.time() - User.request_time)
             print(f'{Fore.CYAN}Ожидание запроса: {round(timeout, 3)} сек{Style.RESET_ALL}')
             time.sleep(timeout) 
-        print(f'{Fore.BLUE}Запрос к API VK{Style.RESET_ALL}\r', end = '')         
+        print(f'{Fore.BLUE}\tЗапрос к API VK{Style.RESET_ALL}\r', end = '')         
         User.request_time = time.time()
         return None
         
