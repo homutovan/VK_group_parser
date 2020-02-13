@@ -49,11 +49,11 @@ class User:
         self.friends_list = self.user_info['friends']
         self.groups = set(self.user_info['groups'])
         self.group_count = []
-        self.group_list = 0
+        self.group_list = []
         
     def get_token(self):
         try:
-            from ssecret import TOKEN as token
+            from secret import TOKEN as token
         except (ModuleNotFoundError, ImportError):
             print(f'{Fore.RED}Файл с секретным ключом отсутствует, использую ключ по умолчанию{Style.RESET_ALL}')
             token = TOKEN
@@ -147,6 +147,7 @@ class Menu:
     def file_writer(self, groups_info_list, filename = 'json_file'):
         with open(filename, 'w', encoding='utf8') as write_file:
            json.dump(groups_info_list, write_file, ensure_ascii = False)
+        print(f'{Fore.GREEN}Запись файла завершена{Style.RESET_ALL}')
         return None;
     
     def main_menu(self, instruction):
@@ -179,7 +180,7 @@ class Menu:
         while loop:
              
             self.greeter()
-            if self.user.group_list != 0:
+            if len(self.user.group_list) != 0:
                 self.submenu(instruction)
                 instruction_string = menu_string[: -7] + sub_menu_string[5:]
             instruction = input(instruction_string)
