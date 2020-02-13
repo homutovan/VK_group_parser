@@ -5,6 +5,7 @@ import time
 from collections import Counter
 from colorama import Fore
 from colorama import Style
+from functools import lru_cache
 
 TOKEN = '73eaea320bdc0d3299faa475c196cfea1c4df9da4c6d291633f9fe8f83c08c4de2a3abf89fbc3ed8a44e1'
 VERSION = '5.103'
@@ -31,7 +32,7 @@ def stabilizer(decor_method):
                 
             except Exception as err:
                 print(f'{Fore.RED}При обработке запроса возникла ошибка: {err}, повторяю запрос{Style.RESET_ALL}')
-                print(decor_method(self, *args, **kwargs)['error'])
+                print(decor_method(self, *args, **kwargs)['error']['error_msg'])
                 
         return result
     return wrapper
@@ -47,7 +48,7 @@ class User:
         self.user_id = self.user_info['id']
         self.friends_list = self.user_info['friends']
         self.groups = set(self.user_info['groups'])
-        self.group_count = 0
+        self.group_count = []
         self.group_list = 0
         
     def get_token(self):
@@ -91,27 +92,28 @@ class User:
                       group_ids = str(group_list)[1: -1])
         return self.requester(params)
     
-    def friend_parser(self, group_count = Counter()):
+    @lru_cache(maxsize = 48)
+    def friend_parser(self):                                    
         params = dict(code = code_vk,
                       user_id = self.user_id)
         resp = self.requester(params)
-        group_count += Counter(resp[0])
+        
         if resp[1] != len(self.friends_list):
             progress(resp[1], len(self.friends_list))
-            self.friend_parser(group_count)    
-        self.group_count = group_count
+            self.friend_parser()
+        self.group_count += resp[0]    
         return None
     
     def correlator(self, friends_number = 3):
-        if self.group_count == 0:
+        if len(self.group_count) < 1:
             self.friend_parser()
-        self.group_list = list(Counter(self.groups) & Counter({key: value for key, value in self.group_count.items() if value < friends_number}))
+        self.group_list = list(Counter(self.groups) & Counter({key: value for key, value in Counter(self.group_count).items() if value < friends_number}))
         return self.group_list
     
     def decorrelator(self):
-        if self.group_count == 0:
+        if len(self.group_count) < 1:
             self.friend_parser()
-        self.group_list = list(Counter(self.groups) - self.group_count)
+        self.group_list = list(Counter(self.groups) - Counter(self.group_count))
         return self.group_list
 
 menu_string = f'{Fore.YELLOW}Сменить пользователя - [r], завершить работу - [q], поиск групп пользователя, не содержащих друзей - [dc], поиск групп, содержащих заданное число друзей - [c]: {Style.RESET_ALL}\n'
