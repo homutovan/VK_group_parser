@@ -39,8 +39,16 @@ code_get_info = '''var d_info = API.users.get({"user_ids": Args.user_ids})[0];
                     info.id = d_info.id;
                     info.first_name = d_info.first_name;
                     info.last_name = d_info.last_name;
-                    info.friends = friends;
-                    info.groups = groups;
+                    if (friends == null) {
+                        info.friends = [];
+                    } else {
+                        info.friends = friends;
+                    }
+                    if (groups == null) {
+                        info.groups = [];
+                    } else {
+                        info.groups = groups;
+                    }
                     return info;
                     }
                 '''

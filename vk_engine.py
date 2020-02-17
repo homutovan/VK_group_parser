@@ -37,7 +37,10 @@ def stabilizer(decor_method):
                 User.error_msg = response['error']['error_msg']   
             except AssertionError:
                 jprint('API VK не может обработать запрос')
-                User.error_msg = response['execute_errors'][0]['error_msg']
+                if 'execute_errors' in response:
+                    User.error_msg = response['execute_errors'][0]['error_msg']
+                else: 
+                    User.error_msg = 'UnknownError'
             User.except_counter += 1
             if (User.except_counter > 10) or (User.error_msg == 'Invalid user id'):
                 User.request_premission = False

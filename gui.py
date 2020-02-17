@@ -60,7 +60,7 @@ def gui():
         [sg.Quit(button_text = 'Выход'), sg.Button(button_text = 'О программе', pad = ((400, 0),(0, 0)))],
     ]
 
-    window = sg.Window('Программа', layout, element_justification = 'left', finalize = True)
+    window = sg.Window('Программа', layout, element_justification = 'left', finalize = True, icon = 'netology.ico')
     progress_bar = window['progressbar']
     
     while True:
@@ -105,7 +105,7 @@ def gui():
                 user = User(values['id'])
                 window['change'].update(disabled = False)
             except TypeError:
-                sg.Popup(f'Возникла ошибка {User.error_msg}, повторите ввод')
+                sg.Popup(f'Возникла ошибка {User.error_msg}, повторите ввод', icon = 'netology.ico')
                 continue
 
         if event == 'change':
@@ -123,10 +123,10 @@ def gui():
             pprint(user.group_info(user.group_list))
             
         if event == 'file':
-            sg.Popup(file_writer(user.group_info(user.group_list), f"{values['file_target']}\{user.user_info['id']}_{user.user_info['last_name']}"))
+            sg.Popup(file_writer(user.group_info(user.group_list), f"{values['file_target']}\{user.user_info['id']}_{user.user_info['last_name']}"), icon = 'netology.ico')
             
         if event == 'О программе':
-            sg.Popup('Данная программа разработана студентом группы PY-28.1 (Нетология) Андреем Хомутовым в рамках выполнения дипломной работы по курсу')
+            sg.Popup('Данная программа разработана студентом группы PY-28.1 (Нетология) Андреем Хомутовым в рамках выполнения дипломной работы по курсу "Основы языка программирования Python" 17/02/2020', icon = 'netology.ico')
                      
     window.close()
     del window
