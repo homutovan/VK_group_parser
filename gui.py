@@ -19,7 +19,7 @@ def file_writer(groups_info_list, filename = 'json_file'):
     
 
 def gui():
-    sg.theme(new_theme='Dark Blue 3')
+    sg.theme('Dark Brown 1')
     
     frame_auth_layout = [
         [sg.Text('Введите User ID пользователя VK'), sg.InputText(key = 'id', size = (15, 1)), sg.OK(key = 'ok_auth')]
@@ -56,10 +56,10 @@ def gui():
         [sg.Frame('Получение данных', frame_progress, visible = True, key = 'progress')],
         [sg.Frame('Вывод полученной информации', frame_display, visible = True, key = 'frame_display')],
         [sg.Frame('Мониторинг процесса', frame_output, visible = True, key = 'frame_output')],
-        [sg.Quit(button_text = 'Выход')],
+        [sg.Quit(button_text = 'Выход'), sg.Button(button_text = 'О программе', pad = ((400, 0),(0, 0)))],
     ]
 
-    window = sg.Window('Программа', layout, element_justification = 'left')
+    window = sg.Window('Программа', layout, element_justification = 'left', finalize = True)
     progress_bar = window['progressbar']
     
     while True:
@@ -97,7 +97,6 @@ def gui():
         else:
             window['frame_display'].update(visible = False)
             
-        #print(event, values)
         if event in (None, 'Exit', 'Выход', 'Cancel'):
             break
         if event == 'ok_auth':
@@ -123,10 +122,13 @@ def gui():
             pprint(user.group_info(user.group_list))
             
         if event == 'file':
-            #sg.PopupGetFile('Выберите путь сохранения файла', save_as = True, file_types = ('All files'))
             sg.Popup(file_writer(user.group_info(user.group_list), f"{values['file_target']}\{user.user_info['id']}_{user.user_info['last_name']}"))
+            
+        if event == 'О программе':
+            sg.Popup('Данная программа разработана студентом группы PY-28.1 (Нетология) Андреем Хомутовым в рамках выполнения дипломной работы по курсу')
                      
     window.close()
+    del window
         
 class FuncThread(threading.Thread):
     def __init__(self, foo, arg):
