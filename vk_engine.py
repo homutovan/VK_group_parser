@@ -26,9 +26,12 @@ def stabilizer(decor_method):
                 jprint('Ответ API VK')
                 return result
             except requests.exceptions.ConnectionError:
+                User.error_msg = 'ConnectionError'
                 jprint(f'Ошибка соединения')
-            except requests.exceptions.ReadTimeout:    
+            except requests.exceptions.ReadTimeout: 
+                User.error_msg = 'ReadTimeout'  
                 jprint(f'Превышено время ожидания от API VK')
+                User.except_counter += 2
             except KeyError:
                 jprint('Ошибка ответа')
                 User.error_msg = response['error']['error_msg']   
@@ -36,9 +39,8 @@ def stabilizer(decor_method):
                 jprint('API VK не может обработать запрос')
                 User.error_msg = response['execute_errors'][0]['error_msg']
             User.except_counter += 1
-            if (User.except_counter == 10) or (User.error_msg == 'Invalid user id'):
+            if (User.except_counter > 10) or (User.error_msg == 'Invalid user id'):
                 User.request_premission = False
-            print(User.except_counter)
         return None
     return wrapper
       

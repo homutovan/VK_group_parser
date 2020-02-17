@@ -47,7 +47,7 @@ def gui():
     ]
     
     frame_output = [
-        [sg.Output(key='hidden', size=(70, 10), visible=True)]
+        [sg.Output(key='output', size=(70, 10), visible=True)]
     ]
 
     layout = [
@@ -66,7 +66,7 @@ def gui():
     while True:
         group_list = []       
         event, values = window.read(timeout = 100)
-        
+                
         if 'user' in locals():
             group_list = user.group_list
             window['frame_user_info'].update(visible = True)
