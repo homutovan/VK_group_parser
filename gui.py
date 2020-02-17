@@ -22,7 +22,7 @@ def gui():
     sg.theme('Dark Brown 1')
     
     frame_auth_layout = [
-        [sg.Text('Введите User ID пользователя VK'), sg.InputText(key = 'id', size = (15, 1)), sg.OK(key = 'ok_auth')]
+        [sg.Text('Введите User ID пользователя VK', size = (30, 1)), sg.InputText(key = 'id', size = (20, 1)), sg.OK(key = 'ok_auth', size = (12, 1))]
     ]
 
     frame_user_layout = [
@@ -32,17 +32,18 @@ def gui():
     ]
 
     frame_action = [
-        [sg.Button('Группы не содержашие друзей', key = 'decorrelator'),sg.Button('Группы содержащие заданное число друзей', key = 'correlator'), sg.Spin([i for i in range(1, 100)], size = (3, 1), initial_value = 1, key = 'spinner'), sg.Text('Число друзей')]
+        [sg.Button('Группы не содержашие друзей', key = 'decorrelator', size = (26, 1)),sg.Button('Группы содержащие заданное число друзей', key = 'correlator', size = (36, 1))],
+        [sg.Spin([i for i in range(1, 100)], size = (3, 1), initial_value = 1, key = 'spinner'), sg.Text('Число друзей')]
     ]
 
     frame_display = [
         [sg.Text('По вашему запросу найдено'), sg.Text(size = (3, 1), key = 'number_group'), sg.Text('групп')],
-        [sg.Button('Вывод информации на дисплей', key = 'display'), sg.Button('Запись информации в файл', key = 'file')],
-        [sg.Input(key = 'file_target'), sg.FolderBrowse(key = 'file_patch', button_text = 'Обзор')]
+        [sg.Button('Вывод информации на дисплей', key = 'display', size = (26, 1)), sg.Button('Запись информации в файл', key = 'file', size = (36, 1))],
+        [sg.Input(key = 'file_target', size = (60, 1)), sg.FolderBrowse(key = 'file_patch', button_text = 'Обзор', size = (10, 1))]
     ]
     
     frame_progress = [
-          [sg.ProgressBar(max_value = 1000, orientation='h', size=(30, 20), key = 'progressbar'), sg.Text(size = (4, 1), key = 'percent'), sg.Text('%')]
+          [sg.ProgressBar(max_value = 1000, orientation='h', size=(34, 20), key = 'progressbar'), sg.Text(size = (4, 1), key = 'percent'), sg.Text('%')]
     ]
     
     frame_output = [
